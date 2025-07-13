@@ -1,3 +1,36 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.iml
+*.db
+*.h2.db
+target/
+out/
+
+# Spring Boot
+application.properties
+application.yml
+
+# Node / Angular
+node_modules/
+dist/
+.env
+.angular/
+package-lock.json
+
+# IDEs
+*.swp
+*.swo
+*.bak
+*.tmp
+.idea/
+.vscode/
+.DS_Store
+
+
 ### **e-commerce-fullstack_springboot_angular_aws**  
 🚀 Full-stack e-commerce application built with Spring Boot, Angular, Spring Security 6, JWT, and AWS deployment.  
 
