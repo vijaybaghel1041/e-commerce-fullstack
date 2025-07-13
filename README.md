@@ -1,3 +1,46 @@
+# 🛍️ E-Commerce Fullstack App
+
+A fully functional full-stack e-commerce application built using:
+
+- ✅ Spring Boot (Java)
+- ✅ Angular (Frontend)
+- ✅ MySQL / H2 Database
+- ✅ Docker & AWS ready
+- ✅ REST APIs with JWT Auth
+- ✅ PayPal Integration
+
+## 🚀 Features
+
+- User Authentication & Authorization
+- Product Catalog & Categories
+- Shopping Cart
+- Secure Checkout (PayPal)
+- Order Management
+- Admin Dashboard
+- Mobile-Responsive Design
+
+## 🛠️ Tech Stack
+
+| Layer        | Tech               |
+|--------------|--------------------|
+| Frontend     | Angular 15+        |
+| Backend      | Spring Boot 3.x    |
+| Database     | MySQL / H2         |
+| Build Tools  | Maven + Docker     |
+| Deployment   | AWS EC2 / GitHub Pages |
+
+## 📦 Getting Started
+
+```bash
+# Backend
+cd backend/
+mvn spring-boot:run
+
+# Frontend
+cd frontend/
+npm install
+ng serve
+
 # Java
 *.class
 *.jar
