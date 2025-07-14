@@ -1,8 +1,13 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'      // Name as configured in Global Tool Configuration
+        nodejs 'NodeJS'    // Name as configured in Global Tool Configuration
+    }
+
     environment {
-        MAVEN_HOME = tool 'Maven'
+        MAVEN_HOME = tool name: 'Maven', type: 'maven'
         NODE_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation'
         PATH = "${NODE_HOME}/bin:${env.PATH}"
     }
@@ -17,7 +22,7 @@ pipeline {
         stage('Build Backend') {
             steps {
                 dir('e-commerce-backend') {
-                    sh 'mvn clean install -DskipTests'
+                    sh "${MAVEN_HOME}/bin/mvn clean install -DskipTests"
                 }
             }
         }
@@ -26,7 +31,7 @@ pipeline {
             steps {
                 dir('e-commerce-frontend') {
                     sh 'npm install'
-                    sh 'ng build --configuration production'
+                    sh 'npm run build -- --configuration production'
                 }
             }
         }
@@ -41,9 +46,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy your frontend and backend here.'
-                // Example:
-                // sh 'scp target/*.jar user@server:/app/backend/'
-                // sh 'scp -r dist/ user@server:/app/frontend/'
+                // Add real deployment commands here
             }
         }
     }
