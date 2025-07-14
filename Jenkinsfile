@@ -3,12 +3,12 @@ pipeline {
 
     tools {
         maven 'Maven'      // Name as configured in Global Tool Configuration
-        nodejs 'NodeJS'    // Name as configured in Global Tool Configuration
+        nodejs 'Node18'    // Name as configured in Global Tool Configuration
     }
 
     environment {
         MAVEN_HOME = tool name: 'Maven', type: 'maven'
-        NODE_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation'
+        NODE_HOME = tool name: 'Node18', type: 'NodeJSInstallation'
         PATH = "${NODE_HOME}/bin:${env.PATH}"
     }
 
