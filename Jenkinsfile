@@ -1,53 +1,61 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven'      // Name as configured in Global Tool Configuration
-        nodejs 'Node18'    // Name as configured in Global Tool Configuration
-    }
-
     environment {
-        MAVEN_HOME = tool name: 'Maven', type: 'maven'
-        NODE_HOME = tool name: 'Node18', type: 'NodeJSInstallation'
-        PATH = "${NODE_HOME}/bin:${env.PATH}"
+        BACKEND_DIR = 'backend'
+        FRONTEND_DIR = 'front'
+        NODEJS_HOME = tool name: 'NodeJS 18', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+        MAVEN_HOME = tool name: 'Maven 3.8', type: 'hudson.tasks.Maven$MavenInstallation'
+        PATH = "${NODEJS_HOME}/bin:${MAVEN_HOME}/bin:$PATH"
     }
 
     stages {
+
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/vijaybaghel1041/e-commerce-fullstack.git', branch: 'main'
+                git url: 'https://github.com/yourusername/your-repo.git', branch: 'main'
             }
         }
 
         stage('Build Backend') {
             steps {
-                dir('e-commerce-backend') {
-                    sh "${MAVEN_HOME}/bin/mvn clean install -DskipTests"
+                dir("${BACKEND_DIR}") {
+                    sh 'mvn clean install -DskipTests'
                 }
             }
         }
 
         stage('Build Frontend') {
             steps {
-                dir('e-commerce-frontend') {
+                dir("${FRONTEND_DIR}") {
                     sh 'npm install'
-                    sh 'npm run build -- --configuration production'
+                    sh 'npm run build'
                 }
             }
         }
 
-        stage('Archive Artifacts') {
+        stage('Run Backend Tests') {
             steps {
-                archiveArtifacts artifacts: 'e-commerce-backend/target/*.jar', fingerprint: true
-                archiveArtifacts artifacts: 'e-commerce-frontend/dist/**/*', fingerprint: true
+                dir("${BACKEND_DIR}") {
+                    sh 'mvn test'
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploy your frontend and backend here.'
-                // Add real deployment commands here
+                echo 'Deploy step here – Add Docker, SSH, S3, or other logic'
+                // Example: dir("${FRONTEND_DIR}/dist") { sh 'aws s3 sync . s3://your-bucket-name' }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build and deployment successful!'
+        }
+        failure {
+            echo 'Build failed. Check errors.'
         }
     }
 }
