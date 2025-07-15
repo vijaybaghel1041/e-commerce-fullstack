@@ -44,7 +44,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploy step here – Add Docker, SSH, S3, or other logic'
+                echo 'Deploy step here – Add Docker, SSH, S3, or other logic.......................vijay baghel.....................'
                 // Example: dir("${FRONTEND_DIR}/dist") { sh 'aws s3 sync . s3://your-bucket-name' }
             }
         }
