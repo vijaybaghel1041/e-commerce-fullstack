@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        BACKEND_DIR = 'backend'
-        FRONTEND_DIR = 'front'
+        BACKEND_DIR = 'e-commerce-backend'
+        FRONTEND_DIR = 'e-commerce-frontend'
         NODEJS_HOME = tool name: 'NodeJS 18', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
         MAVEN_HOME = tool name: 'Maven 3.8', type: 'hudson.tasks.Maven$MavenInstallation'
         PATH = "${NODEJS_HOME}/bin:${MAVEN_HOME}/bin:$PATH"
