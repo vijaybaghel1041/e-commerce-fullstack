@@ -13,7 +13,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/yourusername/your-repo.git', branch: 'main'
+                git url: 'https://github.com/vijaybaghel1041/e-commerce-fullstack.git', branch: 'main'
             }
         }
 
