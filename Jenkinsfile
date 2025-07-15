@@ -20,7 +20,7 @@ pipeline {
         stage('Build Backend') {
             steps {
                 dir("${BACKEND_DIR}") {
-                    sh 'mvn clean install -DskipTests'
+                    bat 'mvn clean install -DskipTests'
                 }
             }
         }
@@ -28,8 +28,8 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 dir("${FRONTEND_DIR}") {
-                    sh 'npm install'
-                    sh 'npm run build'
+                    bat 'npm install'
+                    bat 'npm run build'
                 }
             }
         }
@@ -37,7 +37,7 @@ pipeline {
         stage('Run Backend Tests') {
             steps {
                 dir("${BACKEND_DIR}") {
-                    sh 'mvn test'
+                    bat 'mvn test'
                 }
             }
         }
