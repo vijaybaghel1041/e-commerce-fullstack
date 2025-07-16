@@ -167,6 +167,19 @@ cd e-commerce-fullstack_springboot_angular_aws
 | DELETE | `/api/users/{userId}`        | Delete user (admin)           |
 
 ---
+#Dockersetup
+ecommerce-project/
+├── e-commerce-backend/
+│   ├── Dockerfile
+│   ├── pom.xml
+│   └── src/
+├── e-commerce-frontend/
+│   ├── Dockerfile
+│   ├── angular.json
+│   └── src/
+├── docker-compose.yml
+└── Jenkinsfile
+
 
 ## 🛠 **Tech Stack**  
 ### **Backend:**  
