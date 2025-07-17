@@ -19,7 +19,7 @@ RUN npm run build --prod
 FROM nginx:stable-alpine
 
 # Replace default Nginx website config (optional, for Angular routing support)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+#COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built Angular app from previous stage to Nginx's web root
 COPY --from=build /app/dist/* /usr/share/nginx/html
