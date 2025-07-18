@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
-
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -28,23 +27,22 @@ export class SignupComponent {
       alert('Passwords do not match!');
       return;
     }
-  
+
     const payload = {
       username: this.username,
       email: this.email,
       password: this.password,
       role: this.role
     };
-  
+
     this.authService.signup(payload).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         alert('Signup successful! Please login.');
         this.router.navigate(['/login']);
       },
-      error: (err) => {
+      error: (err: any) => {
         alert(err.error?.message || 'Signup failed!');
       }
     });
   }
-
 }

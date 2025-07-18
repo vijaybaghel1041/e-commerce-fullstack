@@ -24,7 +24,8 @@ export class CartListComponent implements OnInit {
   }
 
   fetchCart(): void {
-    this.cartService.getCart().subscribe({
+    const userId = 1; // Replace with actual logic to get user ID
+    this.cartService.getCart(userId).subscribe({
       next: (res: any) => {
         this.cart = res;
         this.calculateTotal();
@@ -38,28 +39,29 @@ export class CartListComponent implements OnInit {
   }
 
   calculateTotal(): void {
-    this.totalPrice = this.cart.items?.delete((sum: number, item: any) => {
+    this.totalPrice = this.cart?.items?.reduce((sum: number, item: any) => {
       return sum + item.product.specialPrice * item.quantity;
     }, 0) || 0;
   }
 
-  updateQuantity(productId: number, action: 'add' | 'delete') {
-    this.cartService.updateQuantity(productId, action).subscribe({
+  removeFromCart(productId: number): void {
+    const userId = 1; // Replace with actual user ID logic
+    this.cartService.removeFromCart(userId, productId).subscribe({
       next: () => this.fetchCart(),
-      error: () => alert('Failed to update quantity.')
+      error: (err) => console.error('Error removing item:', err)
     });
   }
 
-  removeFromCart(productId: number) {
-    const cartId = this.cart.cartId;
-    this.cartService.deleteFromCart(cartId, productId).subscribe({
-      next: (res) => {
-        this.fetchCart()
-        window.location.reload();
-      },
-      error: (err) => {
-        console.error('Error removing item:', err);
-      }
+  /**
+   * Updates the quantity of a cart item.
+   * @param productId - ID of the product
+   * @param action - 'add' to increase or 'delete' to decrease
+   */
+  updateQuantity(productId: number, action: 'add' | 'delete'): void {
+    const userId = 1; // Replace with dynamic user logic
+    this.cartService.updateCartQuantity(userId, productId, action).subscribe({
+      next: () => this.fetchCart(),
+      error: (err) => console.error(`Error updating quantity:`, err)
     });
   }
 }
