@@ -1,31 +1,32 @@
 # 🏗️ Stage 1: Build Angular application using Node.js
-# Use a lightweight Node.js v20 Alpine image for building the Angular app
 FROM node:20-alpine AS build
 
-# Set the working directory inside the container to /app
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy all files from current directory on host to /app in the container
-COPY . .
+# Copy package.json and package-lock.json separately first to leverage Docker cache
+COPY package*.json ./
 
-# Install all npm dependencies defined in package.json
+# Install dependencies
 RUN npm install
 
-# Build the Angular app in production mode (output goes to /app/dist/<project-name>)
-RUN npm run build --prod
+# Copy the rest of the application source code
+COPY . .
+
+# Build the Angular app in production mode
+RUN npm run build --configuration production
 
 # 🚀 Stage 2: Serve the Angular app using Nginx
-# Use a stable version of Nginx on Alpine for serving static files
 FROM nginx:stable-alpine
 
-# Replace default Nginx website config (optional, for Angular routing support)
+# Replace default Nginx config to support Angular HTML5 routing
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy built Angular app from previous stage to Nginx's web root
+# Copy Angular dist output to Nginx public directory
 COPY --from=build /app/dist/e-commerce-frontend/ /usr/share/nginx/html
 
-# Expose port 80 so Docker knows this container serves on HTTP
+# Expose port 80
 EXPOSE 80
 
-# Run Nginx in the foreground (required for Docker to keep the container alive)
+# Start Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]

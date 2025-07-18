@@ -2,26 +2,29 @@
   "name": "e-commerce-frontend",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "^20.1.0",
-    "prettier": "^3.3.1",
-    "vite": "^7.0.4"
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --configuration production",
+    "test": "ng test",
+    "lint": "ng lint"
   },
   "dependencies": {
-    "@angular/common": "^20.1.0",
-    "@angular/compiler": "^20.1.0",
-    "@angular/core": "^20.1.0",
-    "@angular/forms": "^20.1.0",
-    "@angular/platform-browser": "^20.1.0",
-    "@angular/platform-browser-dynamic": "^20.1.0",
-    "@angular/router": "^20.1.0",
-    "start": "^5.1.0",
-    "zone.js": "^0.15.1"
+    "@angular/animations": "20.1.0",
+    "@angular/common": "20.1.0",
+    "@angular/compiler": "20.1.0",
+    "@angular/core": "20.1.0",
+    "@angular/forms": "20.1.0",
+    "@angular/platform-browser": "20.1.0",
+    "@angular/platform-browser-dynamic": "20.1.0",
+    "@angular/router": "20.1.0",
+    "rxjs": "7.8.1",
+    "zone.js": "0.15.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "20.1.0",
+    "@angular/cli": "20.1.0",
+    "@angular/compiler-cli": "20.1.0",
+    "typescript": "5.8.0"
   }
 }
