@@ -105,6 +105,22 @@ e-commerce-fullstack_springboot_angular_aws/
 │── .gitignore                 
 │── docker-compose.yml         
 ```
+Angular
+my-app/
+├── src/
+│   ├── app/
+│   │   ├── auth/             → Login, Register, AuthService
+│   │   ├── products/         → Product list, product detail
+│   │   ├── shared/           → Reusable components (navbar, footer)
+│   │   ├── app.component.ts  → Root component
+│   │   └── app.module.ts     → Root module
+│   ├── assets/               → Images, icons, static files
+│   ├── environments/         → Dev/prod configs
+│   └── index.html            → Main HTML file
+├── angular.json              → Project build/config info
+├── package.json              → List of dependencies (NPM packages)
+├── tsconfig.json             → TypeScript compiler config
+└── node_modules/             → Auto-installed packages
 
 ---
 
