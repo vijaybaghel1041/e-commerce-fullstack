@@ -15,11 +15,7 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, credentials);
   }
 
-  signup(userData: any): Observable<any> {
+  register(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, userData);
-  }
-
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');  // Adjust if you're using sessionStorage or another auth mechanism
   }
 }

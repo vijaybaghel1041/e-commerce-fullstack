@@ -88,11 +88,11 @@ export class HeaderComponent {
   }
 
   orderCount() {
-    this.orderService.getOrders().subscribe({
+    this.orderService.getMyOrders().subscribe({
       next: (res: any[]) => {
         this.orderCountValue = res.length;
       },
-      error: (err:any) => {
+      error: (err) => {
         console.error('Failed to fetch orders:', err);
       }
     });
@@ -101,7 +101,7 @@ export class HeaderComponent {
   hasAdminOrSellerRole(): boolean {
     const stored = localStorage.getItem('roles');
     const roles: string[] = stored ? JSON.parse(stored) : [];
-
+  
     return roles.includes('ROLE_ADMIN') || roles.includes('ROLE_SELLER');
   }
 
