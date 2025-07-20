@@ -105,7 +105,115 @@ e-commerce-fullstack_springboot_angular_aws/
 │── .gitignore                 
 │── docker-compose.yml         
 ```
+Angular
+my-app/
+├── src/
+│   ├── app/
+│   │   ├── auth/             → Login, Register, AuthService
+│   │   ├── products/         → Product list, product detail
+│   │   ├── shared/           → Reusable components (navbar, footer)
+│   │   ├── app.component.ts  → Root component
+│   │   └── app.module.ts     → Root module
+│   ├── assets/               → Images, icons, static files
+│   ├── environments/         → Dev/prod configs
+│   └── index.html            → Main HTML file
+├── angular.json              → Project build/config info
+├── package.json              → List of dependencies (NPM packages)
+├── tsconfig.json             → TypeScript compiler config
+└── node_modules/             → Auto-installed packages
 
+
+The package.json is the heart of any NodeJS/Angular project.
+"dependencies": {
+  "@angular/core": "main Angular framework",
+  "@angular/common": "common directives (e.g. *ngIf, *ngFor)",
+  "@angular/forms": "template-driven + reactive forms",
+  "@angular/router": "for page routing/navigation",
+  "rxjs": "reactive extensions for async ops (used heavily in Angular)",
+  "zone.js": "Angular change detection"
+},
+"devDependencies": {
+  "@angular/cli": "Angular CLI for build/test",
+  "@angular/compiler-cli": "AOT compilation",
+  "typescript": "transpiles TS to JS",
+  "eslint": "linting and code formatting",
+  "karma/jasmine": "testing frameworks"
+}
+
+3. Build Process
+When you run ng build, Angular uses:
+
+angular.json → Project structure and build options
+
+tsconfig.json → TypeScript compiler rules
+
+Webpack (internally used by Angular CLI) → Bundles your app
+
+Ahead-of-Time Compilation (AOT) → Converts templates + TS to optimized JS
+
+🧪 4. Component & Service Communication
+Example:
+✅ AuthService
+ts
+Copy
+Edit
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  login(credentials: any) {
+    return this.http.post('/api/login', credentials);
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+}
+✅ LoginComponent
+ts
+Copy
+Edit
+export class LoginComponent {
+  constructor(private auth: AuthService) {}
+
+  ngOnInit() {
+    if (this.auth.isLoggedIn()) {
+      // navigate
+    }
+  }
+}
+🔥 If AuthService doesn’t have isLoggedIn(), TypeScript will give error:
+TS2339: Property 'isLoggedIn' does not exist on type 'AuthService'
+
+🛠️ 5. Fixing Common Angular Errors
+❌ Error	✅ Reason	🧪 Fix
+TS2339: Property does not exist	You are calling a method/property that is missing in the class	Add it to the service or fix the usage
+NG0303: Can't bind to property	You're binding to an invalid property in the HTML	Use correct Angular syntax and properties
+Cannot find module	Path to file is wrong	Fix the import path
+ExpressionChangedAfterItHasBeenCheckedError	You changed a value after rendering	Use ChangeDetectorRef or set value before ngAfterViewInit
+
+📚 6. Learning Path for You (Angular Essentials)
+📘 Topic	✅ Why Important
+Angular CLI (ng serve, ng build)	Build, run, and generate files
+Modules & Components	Core structure of Angular apps
+Services & Dependency Injection	Share data/functions across components
+Routing & Navigation	Switch between pages
+Forms (Template-driven vs Reactive)	Handle user inputs
+State & Local Storage	Save JWT token, user info
+HTTPClient & APIs	Connect frontend to backend
+Error Handling	Debug and fix real issues
+Deployment (Optional)	Host on Firebase, AWS, etc.
+
+📦 Recommended Package Folder Structure (Real Project)
+css
+Copy
+Edit
+src/
+├── app/
+│   ├── core/              → AuthService, Interceptors, Guards
+│   ├── auth/              → Login, Register, AuthModule
+│   ├── products/          → Product List, Details, ProductService
+│   ├── shared/            → Reusable UI Components (navbar, button)
+│   ├── app-routing.module.ts
+│   └── app.module.ts
 ---
 
 ## 🚀 **Installation & Setup**  
