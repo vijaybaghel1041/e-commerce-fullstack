@@ -37,11 +37,11 @@ export class SignupComponent {
     };
   
     this.authService.signup(payload).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         alert('Signup successful! Please login.');
         this.router.navigate(['/login']);
       },
-      error: (err) => {
+      error: (err:any) => {
         alert(err.error?.message || 'Signup failed!');
       }
     });

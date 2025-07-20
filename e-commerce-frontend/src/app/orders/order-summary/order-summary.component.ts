@@ -44,21 +44,31 @@ export class OrderSummaryComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.loadAddresses();
+ngOnInit(): void {
+  this.loadAddresses();
 
-    // Fetch cart
-    this.cartService.getCart().subscribe({
-      next: (res) => {
-        this.cart = res;
-        this.loading = false;
-      },
-      error: () => {
-        alert('Failed to load cart.');
-        this.loading = false;
-      }
-    });
+  // ✅ Get userId from localStorage
+  const userIdStr = localStorage.getItem('userId');
+  const userId = userIdStr ? Number(userIdStr) : null;
+
+  if (!userId) {
+    alert('User not logged in!');
+    this.router.navigate(['/login']);
+    return;
   }
+
+  this.cartService.getCart(userId).subscribe({
+    next: (res) => {
+      this.cart = res;
+      this.loading = false;
+    },
+    error: () => {
+      alert('Failed to load cart.');
+      this.loading = false;
+    }
+  });
+}
+
   
   placeOrder() {
     if (this.paymentMethod === 'online') {
@@ -81,7 +91,7 @@ export class OrderSummaryComponent implements OnInit {
         addressId: this.selectedAddressId,
         paymentMethod: this.paymentMethod
       };
-      this.orderService.placeOrder(this.paymentMethod, orderData).subscribe({
+      this.orderService.placeOrder(this.paymentMethod).subscribe({
         next: (res) => {
           alert('Order placed successfully!');
           this.router.navigate(['/my-orders']);
@@ -135,7 +145,7 @@ export class OrderSummaryComponent implements OnInit {
           this.selectedAddressId = this.addresses[0].addressId;
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Failed to load addresses', err);
       }
     });
@@ -143,12 +153,12 @@ export class OrderSummaryComponent implements OnInit {
 
   saveAddress() {
     this.orderService.saveAddress(this.newAddress).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         alert('Address added successfully!');
         this.showAddAddressForm = false;
         this.loadAddresses(); // reload addresses
       },
-      error: (err) => {
+      error: (err: any) => {
         alert('Failed to save address: ' + (err.error?.message || 'Unknown error.'));
       }
     });

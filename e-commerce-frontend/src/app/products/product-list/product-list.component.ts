@@ -82,7 +82,7 @@ export class ProductListComponent {
   
     if (this.selectedCategoryId) {
       // Category-specific endpoint
-      this.productService.getProductsByCategory(this.selectedCategoryId, params).subscribe({
+      this.productService.getProductsByCategory(this.selectedCategoryId).subscribe({
         next: (res: any) => {
           this.products = res.content || res;
           this.totalPages = res.totalPages || 1;
@@ -136,28 +136,34 @@ export class ProductListComponent {
   
   //
   addToCart(productId: number) {
-    this.cartService.addToCart(productId, 1).subscribe({
-      next: (res) => {
-        // console.log('Add to cart response:', res);
-        if (res) {
-          this.cartService.getCart().subscribe({
+  this.cartService.addToCart(productId, 1).subscribe({
+    next: (res) => {
+      if (res) {
+        const userIdStr = localStorage.getItem('userId');
+        const userId = userIdStr ? Number(userIdStr) : null;
+
+        if (userId !== null && !isNaN(userId)) {
+          this.cartService.getCart(userId).subscribe({
             next: (cart) => {
               alert('Product added to cart!');
-              this.cartService.notifyCartChange(); // Notify other component
+              this.cartService.notifyCartChanged(); // Notify other components
             },
             error: (err) => {
               alert('Failed to fetch cart.');
-            } 
+            }
           });
+        } else {
+          alert('User ID not found. Please log in again.');
         }
-      },
-      error: (err) => {
-        // console.error('Error adding to cart:', err);
-        const backendMessage = err.error?.message || 'Something went wrong.';
-        alert('Failed to add to cart: ' + backendMessage);
       }
-    });
-  }
+    },
+    error: (err) => {
+      const backendMessage = err.error?.message || 'Something went wrong.';
+      alert('Failed to add to cart: ' + backendMessage);
+    }
+  });
+}
+
 
   searchProducts(term: string): void {
     this.loading = true;
@@ -169,7 +175,7 @@ export class ProductListComponent {
         this.products = res.content || res;
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         const backendMessage = err.error?.message || 'Search failed.';
         this.loading = false;
         alert('Search failed: ' + backendMessage);
@@ -202,10 +208,11 @@ export class ProductListComponent {
     this.cartService.addToCart(productId, 1).subscribe({
       next: (res) => {
         if (res) {
-          this.cartService.getCart().subscribe({
+          const userId = Number(localStorage.getItem('userId'));
+          this.cartService.getCart(userId).subscribe({
             next: (cart) => {
               alert('Product added to cart! Redirecting to checkout...');
-              this.cartService.notifyCartChange(); // Notify other component
+              this.cartService.notifyCartChanged(); // Notify other component
               // Redirect to checkout page
               // this.router.navigate(['/checkout']);
               window.location.href = '/cart';

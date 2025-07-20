@@ -20,7 +20,7 @@ export class OrderPlaceSuccessComponent {
     const orderData = history.state;
 
     if (orderData) {
-      this.orderService.placeOrder(this.paymentMethod, orderData).subscribe({
+      this.orderService.placeOrder(orderData).subscribe({
         next: (res) => {
           setTimeout(() => {
             this.router.navigate(['/my-orders']);

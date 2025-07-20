@@ -29,9 +29,13 @@ export class HeaderComponent {
     this.loadCartCount();
 
     // 🧠 Update whenever cart changes
-    this.cartService.onCartChange().subscribe(() => {
-      this.loadCartCount();
-    });
+    // If you want to update cart count when cart changes, subscribe to a cartChanged observable (you need to implement this in CartService if not present)
+    // Only subscribe if cartChanged observable exists on cartService
+    if ('cartChanged' in this.cartService && this.cartService.cartChanged && typeof (this.cartService as any).cartChanged.subscribe === 'function') {
+      (this.cartService as any).cartChanged.subscribe(() => {
+        this.loadCartCount();
+      });
+    }
   }
 
   // onSearch(e: Event) {
@@ -55,9 +59,14 @@ export class HeaderComponent {
     }
   }
 
+  get userId(): number | null {
+    const userIdStr = localStorage.getItem('userId');
+    return userIdStr ? Number(userIdStr) : null;
+  }
+
   loadCartCount() {
-    if (this.username()) {
-      this.cartService.getCart().subscribe({
+    if (this.username() && this.userId !== null && !isNaN(this.userId)) {
+      this.cartService.getCart(this.userId).subscribe({
         next: (res: any) => {
           this.cartCount.set(res.products.length || 0);
         },
@@ -88,14 +97,21 @@ export class HeaderComponent {
   }
 
   orderCount() {
-    this.orderService.getMyOrders().subscribe({
-      next: (res: any[]) => {
-        this.orderCountValue = res.length;
-      },
-      error: (err) => {
-        console.error('Failed to fetch orders:', err);
-      }
-    });
+    const userIdStr = localStorage.getItem('userId');
+    const userId = userIdStr ? Number(userIdStr) : null;
+    if (userId !== null && !isNaN(userId)) {
+      this.orderService.getOrders(userId).subscribe({
+        next: (res: any[]) => {
+          this.orderCountValue = res.length;
+        },
+        error: (err: any) => {
+          console.error('Failed to fetch orders:', err);
+        }
+      });
+    } else {
+      console.error('No valid userId found in localStorage.');
+      this.orderCountValue = 0;
+    }
   }
 
   hasAdminOrSellerRole(): boolean {

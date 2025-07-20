@@ -42,12 +42,12 @@ export class ProductCreateComponent {
       return;
     }
 
-    this.productService.createProduct(this.product.categoryId, this.product).subscribe({
+    this.productService.createProduct(this.product).subscribe({
       next: () => {
         alert('✅ Product created!');
         this.router.navigate(['/products']);
       },
-      error: (err) => {
+      error: (err: any) => {
         const msg = err.error?.message || 'Unknown error';
         alert('❌ Failed: ' + msg);
       }

@@ -18,13 +18,24 @@ export class CartListComponent implements OnInit {
   loading = true;
   error = '';
   totalPrice = 0;
+  userId: number | null = null;
 
   ngOnInit(): void {
-    this.fetchCart();
+    const userIdStr = localStorage.getItem('userId');
+    this.userId = userIdStr ? Number(userIdStr) : null;
+
+    if (this.userId !== null && !isNaN(this.userId)) {
+      this.fetchCart();
+    } else {
+      this.error = 'Invalid or missing user ID';
+      this.loading = false;
+    }
   }
 
   fetchCart(): void {
-    this.cartService.getCart().subscribe({
+    if (this.userId === null) return;
+
+    this.cartService.getCart(this.userId).subscribe({
       next: (res: any) => {
         this.cart = res;
         this.calculateTotal();
@@ -38,13 +49,14 @@ export class CartListComponent implements OnInit {
   }
 
   calculateTotal(): void {
-    this.totalPrice = this.cart.items?.delete((sum: number, item: any) => {
+    this.totalPrice = this.cart.items?.reduce((sum: number, item: any) => {
       return sum + item.product.specialPrice * item.quantity;
     }, 0) || 0;
   }
 
   updateQuantity(productId: number, action: 'add' | 'delete') {
-    this.cartService.updateQuantity(productId, action).subscribe({
+    const mappedAction = action === 'add' ? 'inc' : 'dec';
+    this.cartService.updateQuantity(productId, mappedAction).subscribe({
       next: () => this.fetchCart(),
       error: () => alert('Failed to update quantity.')
     });
@@ -53,11 +65,8 @@ export class CartListComponent implements OnInit {
   removeFromCart(productId: number) {
     const cartId = this.cart.cartId;
     this.cartService.deleteFromCart(cartId, productId).subscribe({
-      next: (res) => {
-        this.fetchCart()
-        window.location.reload();
-      },
-      error: (err) => {
+      next: () => this.fetchCart(),
+      error: (err: any) => {
         console.error('Error removing item:', err);
       }
     });
