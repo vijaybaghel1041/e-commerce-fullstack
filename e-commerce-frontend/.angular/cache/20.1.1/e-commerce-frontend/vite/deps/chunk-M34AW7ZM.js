@@ -1676,7 +1676,7 @@ var AnimationFrameAction = function(_super) {
       return _super.prototype.recycleAsyncId.call(this, scheduler, id, delay2);
     }
     var actions = scheduler.actions;
-    if (id != null && id === scheduler._scheduled && ((_a = actions[actions.length - 1]) === null || _a === void 0 ? void 0 : _a.id) !== id) {
+    if (id != null && ((_a = actions[actions.length - 1]) === null || _a === void 0 ? void 0 : _a.id) !== id) {
       animationFrameProvider.cancelAnimationFrame(id);
       scheduler._scheduled = void 0;
     }
@@ -1693,13 +1693,8 @@ var AnimationFrameScheduler = function(_super) {
   }
   AnimationFrameScheduler2.prototype.flush = function(action) {
     this._active = true;
-    var flushId;
-    if (action) {
-      flushId = action.id;
-    } else {
-      flushId = this._scheduled;
-      this._scheduled = void 0;
-    }
+    var flushId = this._scheduled;
+    this._scheduled = void 0;
     var actions = this.actions;
     var error;
     action = action || actions.shift();
@@ -4228,6 +4223,7 @@ function merge2() {
   }
   var scheduler = popScheduler(args);
   var concurrent = popNumber(args, Infinity);
+  args = argsOrArgArray(args);
   return operate(function(source, subscriber) {
     mergeAll(concurrent)(from(__spreadArray([source], __read(args)), scheduler)).subscribe(subscriber);
   });
@@ -5535,4 +5531,4 @@ export {
   zipAll,
   zipWith
 };
-//# sourceMappingURL=chunk-3KKC7HMJ.js.map
+//# sourceMappingURL=chunk-M34AW7ZM.js.map
